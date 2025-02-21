@@ -37,12 +37,12 @@ void kmeans (int k, double species[LENGHT][DIMENSIONS]){
     clusters cluster[N];
     for (int i = 0; i<k; i++){
         for(int j = 0; j<DIMENSIONS; j++){
-            cluster[i].centroid[j] = rand() % 101;
+            cluster[i].centroid[j] = rand() % 11;
         }
     }
 
     //repeat the processe for 100 times
-    for (int z = 0; z < 100; z++){
+    for (int z = 0; z < 300; z++){
         for (int i = 0; i < k; i++){
             cluster[i].qtd = 0;
         }
@@ -66,9 +66,9 @@ void kmeans (int k, double species[LENGHT][DIMENSIONS]){
 
             //assign the point to the cluster and update the number of points in the cluster
             for(int j = 0; j < DIMENSIONS; j++){
-                cluster[indice].points[cluster[indice].qtd][j] = species[i][j];
-                cluster[indice].qtd++;
+                cluster[indice].points[cluster[indice].qtd][j] = species[i][j];          
             }
+            cluster[indice].qtd++;
 
         }
 
@@ -88,7 +88,7 @@ void kmeans (int k, double species[LENGHT][DIMENSIONS]){
 
 
     for (int i = 0; i < k; i++){
-        for (int j = 0; j < LENGHT; j++){
+        for (int j = 0; j < cluster[i].qtd; j++){
             for (int l = 0; l < DIMENSIONS; l++){
                 cout << cluster[i].points[j][l] << ", ";
             }
