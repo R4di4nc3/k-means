@@ -34,7 +34,7 @@ double distance(double p1[], double p2[]){
 void kmeans (int k, double species[LENGHT][DIMENSIONS]){
     srand(time(0));
     int indice;
-    double smaller, sum, diference;
+    double smaller, sum, diference, totalDist;
     int random1, ranComp = -1;
 
     //initialize the k clusters
@@ -49,11 +49,12 @@ void kmeans (int k, double species[LENGHT][DIMENSIONS]){
         }
         ranComp = random1;
     }
+    
 
-    //repeat the processe for 300 times
-    for (int z = 0; z < 300; z++){
-
+    //repeat the processes
+    do{
         
+
         //sets the total amount of points in a cluster to 0 to restart the process os assignment
         for (int i = 0; i < k; i++){
             cluster[i].qtd = 0;
@@ -85,8 +86,16 @@ void kmeans (int k, double species[LENGHT][DIMENSIONS]){
 
         }
 
-        //calculates the mean of all the coordenates of a cluster and uptade its centroid
-        for (int i = 0; i < k; i++){   
+        //calculates the mean of all the coordenates of a cluster, uptade its centroid and calculates the total diference between the current centroid and the last onde for a break  
+        totalDist = 0;
+        for (int i = 0; i < k; i++){  
+            
+            double old_centroid[DIMENSIONS];
+
+            for (int j = 0; j< DIMENSIONS; j++){
+                old_centroid[j] = cluster[i].centroid[j];
+            }
+
             for (int j = 0; j < DIMENSIONS; j++){
                 sum = 0;
                 for (int l = 0; l < cluster[i].qtd; l++){
@@ -95,11 +104,15 @@ void kmeans (int k, double species[LENGHT][DIMENSIONS]){
 
                 sum = sum/cluster[i].qtd;
                 cluster[i].centroid[j] = sum;
+
             }
+
+            totalDist += distance(cluster[i].centroid, old_centroid);
+
         }
 
-        
-    }
+    //until clusters are converged
+    }while(totalDist > 0.01);
 
 
     for (int i = 0; i < k; i++){
